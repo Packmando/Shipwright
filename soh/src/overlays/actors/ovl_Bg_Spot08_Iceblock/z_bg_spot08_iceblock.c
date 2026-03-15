@@ -21,6 +21,8 @@ void BgSpot08Iceblock_FloatRotating(BgSpot08Iceblock* this, PlayState* play);
 void BgSpot08Iceblock_SetupFloatOrbitingTwins(BgSpot08Iceblock* this);
 void BgSpot08Iceblock_FloatOrbitingTwins(BgSpot08Iceblock* this, PlayState* play);
 void BgSpot08Iceblock_SetupNoAction(BgSpot08Iceblock* this);
+void BgSpot08Iceblock_SetupMelt(BgSpot08Iceblock* this);
+void BgSpot08Iceblock_Melt(BgSpot08Iceblock* this, PlayState* play);
 
 const ActorInit Bg_Spot08_Iceblock_InitVars = {
     ACTOR_BG_SPOT08_ICEBLOCK,
@@ -68,6 +70,7 @@ void BgSpot08Iceblock_CheckParams(BgSpot08Iceblock* this) {
             break;
         case 1:
         case 4:
+        case 5:
         case 0x10:
         case 0x11:
         case 0x12:
@@ -75,6 +78,7 @@ void BgSpot08Iceblock_CheckParams(BgSpot08Iceblock* this) {
         case 0x20:
         case 0x23:
         case 0x24:
+        case 0x25:
             break;
     }
 }
@@ -345,6 +349,9 @@ void BgSpot08Iceblock_Init(Actor* thisx, PlayState* play) {
         case 4:
             BgSpot08Iceblock_SetupNoAction(this);
             break;
+        case 5:
+            BgSpot08Iceblock_SetupMelt(this);
+            break;
     }
 }
 
@@ -412,6 +419,31 @@ void BgSpot08Iceblock_FloatOrbitingTwins(BgSpot08Iceblock* this, PlayState* play
 
 void BgSpot08Iceblock_SetupNoAction(BgSpot08Iceblock* this) {
     BgSpot08Iceblock_SetupAction(this, NULL);
+}
+
+void BgSpot08Iceblock_SetupMelt(BgSpot08Iceblock* this) {
+    this->meltTimer = 300;
+    this->actionFunc = BgSpot08Iceblock_Melt;
+}
+
+void BgSpot08Iceblock_Melt(BgSpot08Iceblock* this, PlayState* play) {
+    if (this->meltTimer > 0) {
+        this->meltTimer--;
+        return;
+    }
+
+    if (this->meltTimer == 0 && this->soundPlayed == false) {
+        Audio_PlayActorSound2(&this->dyna.actor, NA_SE_EV_ICE_MELT);
+        this->soundPlayed = true;
+    }
+
+    this->dyna.actor.scale.x -= 0.001f;
+    this->dyna.actor.scale.y -= 0.001f;
+    this->dyna.actor.scale.z -= 0.001f;
+
+    if (this->dyna.actor.scale.x <= 0.0f) {
+        Actor_Kill(&this->dyna.actor);
+    }
 }
 
 void BgSpot08Iceblock_Update(Actor* thisx, PlayState* play) {

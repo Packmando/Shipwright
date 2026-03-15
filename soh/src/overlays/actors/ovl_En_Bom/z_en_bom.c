@@ -100,7 +100,12 @@ void EnBom_Init(Actor* thisx, PlayState* play) {
     thisx->colChkInfo.cylHeight = 10;
 
     if (!GameInteractor_GetRandomBombFuseTimerActive()) {
-        this->timer = 70;
+        if (thisx->params == BOMB_EXPLOSION) {
+            this->timer = 0;
+            thisx->params = BOMB_BODY;
+        } else {
+            this->timer = 70;
+        }
     } else {
         // Set random fuse timer with a minimum of 10. Do the sound and scale immediately,
         // otherwise the bomb is invisible until the timer hits the "normal" amount.

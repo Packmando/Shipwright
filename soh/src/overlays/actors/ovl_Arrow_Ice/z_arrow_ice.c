@@ -110,6 +110,12 @@ void ArrowIce_Hit(ArrowIce* this, PlayState* play) {
     }
 
     timer = this->timer;
+
+    if (this->timer == 32) {
+        Vec3f pos = this->actor.world.pos;
+        Actor_Spawn(&play->actorCtx, play, ACTOR_BG_SPOT08_ICEBLOCK, pos.x, pos.y, pos.z, 0, 0, 0, 0x25, 0);
+    }
+
     if (timer != 0) {
         this->timer -= 1;
 

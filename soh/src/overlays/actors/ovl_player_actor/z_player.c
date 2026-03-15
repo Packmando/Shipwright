@@ -2691,8 +2691,7 @@ s32 func_8083442C(Player* this, PlayState* play) {
 
                 if (this->unk_860 >= 0) {
                     if ((magicArrowType >= 0) && (magicArrowType <= 2)) {
-                        if (GameInteractor_Should(VB_PLAYER_ARROW_MAGIC_CONSUMPTION, true, this, magicArrowType,
-                                                  &arrowType)) {
+                        if (GameInteractor_Should(VB_PLAYER_ARROW_MAGIC_CONSUMPTION, true, this, magicArrowType, &arrowType)) {
                             if (!Magic_RequestChange(play, sMagicArrowCosts[magicArrowType], MAGIC_CONSUME_NOW)) {
                                 arrowType = ARROW_NORMAL;
                             }
