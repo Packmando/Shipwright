@@ -111,7 +111,6 @@ void ArrowFire_Hit(ArrowFire* this, PlayState* play) {
     if (this->timer == 32) {
         Vec3f pos = this->actor.world.pos;
         Actor_Spawn(&play->actorCtx, play, ACTOR_EN_BOM, this->actor.world.pos.x, this->actor.world.pos.y, this->actor.world.pos.z, 0, 0, 0, 1, 0);
-        Actor_Kill(&this->actor);
     }
 
     timer = this->timer;
